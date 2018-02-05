@@ -16,7 +16,7 @@ def calc_func(data_feature, test_feature, data_labels, test_labels):
   res_idx = [np.argmin(line) for line in dist]
   res = data_labels - test_labels[res_idx]
 
-  return res[np.where(res == 0)].shape[0]
+  return res[np.where(res != 0)].shape[0]
  
 def _worker(shared_dict, raw_data, training_size, labels, num_iter=10):
   if training_size > len(raw_data['data']):
@@ -54,7 +54,7 @@ def calc_data(raw_data, labels, training_set=None, num_iter=10):
       value = shared_dict[idx]
       res.append([idx, np.mean(value)/idx, np.std(value)])
 
-    res_df = pd.DataFrame(res, columns=['Iter_Num', 'Mean', 'STD'])
+    res_df = pd.DataFrame(res, columns=['Iter_Num', 'Err_Mean', 'Err_STD'])
     return res_df
         
 def plot_result(data):
@@ -71,7 +71,7 @@ def run():
     labels = ['data', 'labels', 'testdata', 'testlabels']
     print calc_data(ocr, labels)
 
-    print 'Using test data:'
+    print 'Using train data:'
     labels = ['data', 'labels', 'data', 'labels']
     print calc_data(ocr, labels)
 
