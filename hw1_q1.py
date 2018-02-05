@@ -57,23 +57,24 @@ def calc_data(raw_data, labels, training_set=None, num_iter=10):
     res_df = pd.DataFrame(res, columns=['Iter_Num', 'Err_Mean', 'Err_STD'])
     return res_df
         
-def plot_result(data):
-    x_axis = range(len(data))
-    y_axis = np.mean(data, axis=1)
-    err = np.std(data, axis=1)
+def plot_result(data, name):
+    x_axis = data.Iter_Num.tolist()
+    y_axis = data.Err_Mean.tolist()
+    err = data.Err_STD.tolist()
 
-    plt.errorbar(x_axis, y_axis, yerr=err, fmt='o')
-    plt.show()
+    plt.errorbar(x_axis, y_axis, yerr=err, fmt='o', ecolor='k')
+    plt.savefig('{}.png'.format(name)) 
+
 
 def run():
     ocr = loadmat('ocr.mat')
-    print 'Using test data:'
     labels = ['data', 'labels', 'testdata', 'testlabels']
-    print calc_data(ocr, labels)
-
-    print 'Using train data:'
+    data = calc_data(ocr, labels)
+    plot_result(data, 'Test')
+  
     labels = ['data', 'labels', 'data', 'labels']
-    print calc_data(ocr, labels)
+    data = calc_data(ocr, labels)
+    plot_result(data, 'Train')
 
 if  __name__ == '__main__':
     run()
