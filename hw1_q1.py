@@ -64,6 +64,7 @@ def plot_result(data, name):
 
     plt.errorbar(x_axis, y_axis, yerr=err, fmt='o', ecolor='k')
     plt.savefig('{}.png'.format(name)) 
+    plt.close()
 
 
 def run():
